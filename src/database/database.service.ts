@@ -1,4 +1,4 @@
-import { Album } from "src/albums/albums.interfaces";
+import { Album, CreateAlbumDto, UpdateAlbumDto } from "src/albums/albums.interfaces";
 import { Artist, CreateArtistDto, UpdateArtistDto } from "src/artists/artists.interfaces";
 import { Favorites } from "src/favourites/favourites.interfaces";
 import { CreateTrackDto, Track, UpdateTrackDto } from "src/tracks/tracks.interfaces";
@@ -107,7 +107,14 @@ export class DatabaseService {
         this.artists = this.artists.filter((artist) => artist.id !== artistId)
         this.tracks.forEach((track)=> {
             if (track.artistId === artistId) {
+                console.log('Зашло')
                 track.artistId = null
+                console.log(JSON.stringify(track))
+            }
+        })
+        this.albums.forEach((album) => {
+            if (album.artistId === artistId) {
+                album.artistId = null
             }
         })
     }
@@ -124,6 +131,39 @@ export class DatabaseService {
 
     getAlbums() {
         return this.albums
+    }
+
+    getAlbum(albumId: string) {
+        return this.albums.find((album) => album.id === albumId)
+    }
+
+    createAlbum(createAlbumPayload: CreateAlbumDto) {
+        const newAlbum: Album = {
+            ...createAlbumPayload,
+            id: uuid(),
+        }
+        this.albums.push(newAlbum)
+
+        return newAlbum
+    }
+
+    deleteAlbum(albumId: string) {
+        this.albums = this.albums.filter((album) => album.id !== albumId)
+        this.tracks.forEach((track) => {
+            if (track.albumId === albumId) {
+                track.albumId = null
+            }
+        })
+    }
+
+    updateAlbum(albumId: string, updateAlbumPayload: UpdateAlbumDto) {
+        const albumIndex = this.albums.findIndex((album) => album.id === albumId)
+        this.albums[albumIndex] = {
+            ...this.albums[albumIndex],
+            ...updateAlbumPayload
+        }
+
+        return this.albums[albumIndex]
     }
 
 

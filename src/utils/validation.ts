@@ -1,3 +1,4 @@
+import { CreateAlbumDto, UpdateAlbumDto } from "src/albums/albums.interfaces";
 import { CreateArtistDto, UpdateArtistDto } from "src/artists/artists.interfaces";
 import { CreateTrackDto, UpdateTrackDto } from "src/tracks/tracks.interfaces"
 import { CreateUserDto, UpdatePasswordDto } from "src/users/users.interfaces"
@@ -61,4 +62,32 @@ export const isValidUpdateArtistPayload = (updateArtistPayload: UpdateArtistDto)
     const isValidGrammy = updateArtistPayload.grammy === undefined || typeof updateArtistPayload.grammy === 'boolean'
 
     return isOnlyKnownKeys && isValidName && isValidGrammy
+}
+
+export const isValidCreateAlbumPayload = (createAlbumPayload: CreateAlbumDto) => {
+    const { name, artistId, year } = createAlbumPayload
+
+    const isOnlyKnownKeys = isOnlyKnownAlbumProps(createAlbumPayload)
+    const isValidName = typeof name === 'string' && name.trim()
+    const isValidYear = typeof year === 'number' && year >= 0
+    const isValidArtistId = !artistId || uuidValidate(artistId)
+
+    return isOnlyKnownKeys && isValidName && isValidYear && isValidArtistId
+}
+
+export const isValidUpdateAlbumPayload = (updateAlbumPayload: UpdateAlbumDto) => {
+    const { name, artistId, year } = updateAlbumPayload
+
+    const isOnlyKnownKeys = isOnlyKnownAlbumProps(updateAlbumPayload)
+    const isValidName = name === undefined || (typeof name === 'string' && name.trim())
+    const isValidYear = year === undefined || (typeof year === 'number' && year >= 0)
+    const isValidArtistId = !artistId || uuidValidate(artistId)
+
+    return isOnlyKnownKeys && isValidName && isValidYear && isValidArtistId
+}
+
+const isOnlyKnownAlbumProps = (payload: UpdateAlbumDto | CreateAlbumDto) => {
+    const props = ['name', 'artistId', 'year']
+
+    return Object.keys(payload).every((key) => props.includes(key))
 }
