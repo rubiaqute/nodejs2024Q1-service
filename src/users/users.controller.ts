@@ -38,6 +38,7 @@ export class UserController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   createUser(@Body() createUserPayload: CreateUserDto) {
     if (isValidCreateUserPayload(createUserPayload)) {
       const newUser = this.database.createUser(createUserPayload);
