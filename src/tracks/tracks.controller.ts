@@ -64,7 +64,7 @@ export class TracksController {
     }
 
     @Put(':id')
-    updatePassword(@Param() params: any, @Body() updateTrackPayload: UpdateTrackDto) {
+    updateTrack(@Param() params: any, @Body() updateTrackPayload: UpdateTrackDto) {
         const trackId = params.id
         const isValidUuid = uuidValidate(trackId)
 

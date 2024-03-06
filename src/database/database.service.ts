@@ -1,5 +1,5 @@
 import { Album } from "src/albums/albums.interfaces";
-import { Artist } from "src/artists/artists.interfaces";
+import { Artist, CreateArtistDto, UpdateArtistDto } from "src/artists/artists.interfaces";
 import { Favorites } from "src/favourites/favourites.interfaces";
 import { CreateTrackDto, Track, UpdateTrackDto } from "src/tracks/tracks.interfaces";
 import { CreateUserDto, User } from "src/users/users.interfaces";
@@ -87,6 +87,39 @@ export class DatabaseService {
 
     getArtists() {
         return this.artists
+    }
+
+    getArtist(artistId: string) {
+        return this.artists.find((artist) => artist.id === artistId)
+    }
+
+    createArtist(createArtistPayload: CreateArtistDto) {
+        const newArtist: Artist = {
+            ...createArtistPayload,
+            id: uuid(),
+        }
+        this.artists.push(newArtist)
+
+        return newArtist
+    }
+
+    deleteArtist(artistId: string) {
+        this.artists = this.artists.filter((artist) => artist.id !== artistId)
+        this.tracks.forEach((track)=> {
+            if (track.artistId === artistId) {
+                track.artistId = null
+            }
+        })
+    }
+
+    updateArtist(artistId: string, updateArtistPayload: UpdateArtistDto) {
+        const artistIndex = this.artists.findIndex((artist) => artist.id === artistId)
+        this.artists[artistIndex] = {
+            ... this.artists[artistIndex],
+            ...updateArtistPayload
+        }
+
+        return this.artists[artistIndex]
     }
 
     getAlbums() {
