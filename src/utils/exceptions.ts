@@ -1,31 +1,34 @@
-import { HttpException, HttpStatus } from "@nestjs/common";
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class NotValidIdError extends HttpException {
-    constructor() {
-        super('The id is not valid', HttpStatus.BAD_REQUEST);
-    }
+  constructor() {
+    super('The id is not valid', HttpStatus.BAD_REQUEST);
+  }
 }
 
 export class NotFoundEntityError extends HttpException {
-    constructor(entityName: string) {
-        super(`The ${entityName} is not found`, HttpStatus.NOT_FOUND);
-    }
+  constructor(entityName: string) {
+    super(`The ${entityName} is not found`, HttpStatus.NOT_FOUND);
+  }
 }
 
 export class NotValidBodyError extends HttpException {
-    constructor() {
-        super('The body is not valid', HttpStatus.BAD_REQUEST);
-    }
+  constructor() {
+    super('The body is not valid', HttpStatus.BAD_REQUEST);
+  }
 }
 
 export class WrongPasswordError extends HttpException {
-    constructor() {
-        super('Your old password is incorrect or new password is invalid', HttpStatus.FORBIDDEN);
-    }
+  constructor() {
+    super(
+      'Your old password is incorrect or new password is invalid',
+      HttpStatus.FORBIDDEN,
+    );
+  }
 }
 
 export class NotExistEntityError extends HttpException {
-    constructor(entityName: string) {
-        super(`The ${entityName} doesn't exist`, HttpStatus.UNPROCESSABLE_ENTITY);
-    }
+  constructor(entityName: string) {
+    super(`The ${entityName} doesn't exist`, HttpStatus.UNPROCESSABLE_ENTITY);
+  }
 }

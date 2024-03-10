@@ -3,7 +3,7 @@ import { DatabaseService } from 'src/database/database.service';
 import { AlbumsController } from './albums.controller';
 
 @Module({
-    imports: [],
-    controllers: [AlbumsController],
+  imports: [],
+  controllers: [AlbumsController],
 })
-export class AlbumsModule { }
+export class AlbumsModule {}

@@ -1,8 +1,8 @@
-import { Module } from "@nestjs/common";
-import { FavouritesController } from "./favourites.controller";
+import { Module } from '@nestjs/common';
+import { FavouritesController } from './favourites.controller';
 
 @Module({
-    imports: [],
-    controllers: [FavouritesController],
+  imports: [],
+  controllers: [FavouritesController],
 })
-export class FavouritesModule { }
+export class FavouritesModule {}
