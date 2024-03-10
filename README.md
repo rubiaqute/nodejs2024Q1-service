@@ -1,5 +1,13 @@
 # Home Library Service
 
+For cross-check:
+1. Clone the repo 
+2. Checkout to branch develop
+3. Install dependencies
+4. delete the extension from env.example
+5. start the server (npm run start)
+6. start the test npm run test
+
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
