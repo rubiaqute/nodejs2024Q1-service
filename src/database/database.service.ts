@@ -73,6 +73,7 @@ export class DatabaseService {
 
     deleteTrack(trackId: string) {
         this.tracks = this.tracks.filter((track) => track.id !== trackId)
+        this.favourites.tracks = this.favourites.tracks.filter((id) => id !== trackId)
     }
 
     updateTrack(trackId:string, updateTrackPayload: UpdateTrackDto) {
@@ -107,9 +108,7 @@ export class DatabaseService {
         this.artists = this.artists.filter((artist) => artist.id !== artistId)
         this.tracks.forEach((track)=> {
             if (track.artistId === artistId) {
-                console.log('Зашло')
                 track.artistId = null
-                console.log(JSON.stringify(track))
             }
         })
         this.albums.forEach((album) => {
@@ -117,6 +116,7 @@ export class DatabaseService {
                 album.artistId = null
             }
         })
+        this.favourites.artists = this.favourites.artists.filter((id) => id !== artistId)
     }
 
     updateArtist(artistId: string, updateArtistPayload: UpdateArtistDto) {
@@ -154,6 +154,7 @@ export class DatabaseService {
                 track.albumId = null
             }
         })
+        this.favourites.albums = this.favourites.albums.filter((id) => id !== albumId)
     }
 
     updateAlbum(albumId: string, updateAlbumPayload: UpdateAlbumDto) {
@@ -164,6 +165,43 @@ export class DatabaseService {
         }
 
         return this.albums[albumIndex]
+    }
+
+    getFavourites() {
+        return {
+            artists: this.favourites.artists.map((artistId) => this.getArtist(artistId)),
+            albums: this.favourites.albums.map((albumId) => this.getAlbum(albumId)),
+            tracks: this.favourites.tracks.map((trackId) => this.getTrack(trackId)),
+        }
+    }
+
+    addToFav(entityType: keyof Favorites, entityId:string) {
+        const isEntityExists = this.getIsEntityExists(entityType, entityId)
+
+        if (isEntityExists) {
+            this.favourites[entityType].push(entityId)
+        }
+
+        return isEntityExists
+    }
+
+    deleteFromFav(entityType: keyof Favorites, entityId: string) {
+        const isEntityExists = this.getIsEntityExists(entityType, entityId)
+
+        if (isEntityExists) {
+            this.favourites[entityType] = this.favourites[entityType].filter((id) => id !== entityId)
+        }
+
+        return isEntityExists
+    }
+
+    private getIsEntityExists(entityType: keyof Favorites, entityId: string) {
+        switch (entityType) {
+            case 'albums': return Boolean(this.getAlbum(entityId))
+            case 'artists': return Boolean(this.getArtist(entityId))
+            case 'tracks': return Boolean(this.getTrack(entityId))
+            default: return false
+        }
     }
 
 

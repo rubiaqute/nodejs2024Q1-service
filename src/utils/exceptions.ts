@@ -23,3 +23,9 @@ export class WrongPasswordError extends HttpException {
         super('Your old password is incorrect or new password is invalid', HttpStatus.FORBIDDEN);
     }
 }
+
+export class NotExistEntityError extends HttpException {
+    constructor(entityName: string) {
+        super(`The ${entityName} doesn't exist`, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+}
